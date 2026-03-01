@@ -2,6 +2,7 @@
 
 A collection of classic mini games you can play right in your terminal! Built with Python and the `blessed` library for a smooth, colorful terminal UI experience.
 
+[![PyPI version](https://img.shields.io/pypi/v/terminal-games?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/terminal-games/)
 ![Python](https://img.shields.io/badge/Python-3.12+-blue?logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey)
@@ -13,7 +14,6 @@ A collection of classic mini games you can play right in your terminal! Built wi
 ### 🧱 Tetris
 The classic falling blocks puzzle game! Arrange tetrominoes to complete lines and score points. Features ghost pieces, next piece preview, NES-style scoring, and increasing difficulty.
 
-**Controls:**
 | Key | Action |
 |-----|--------|
 | `← →` or `A/D` | Move piece left/right |
@@ -26,7 +26,6 @@ The classic falling blocks puzzle game! Arrange tetrominoes to complete lines an
 ### 🐍 Snake
 Navigate the snake to eat food and grow longer — but don't run into the walls or yourself! Features bonus food, speed progression, and a gradient snake body.
 
-**Controls:**
 | Key | Action |
 |-----|--------|
 | `← → ↑ ↓` or `WASD` | Change direction |
@@ -36,7 +35,6 @@ Navigate the snake to eat food and grow longer — but don't run into the walls 
 ### 💣 Minesweeper
 The timeless puzzle of logic and deduction. Uncover cells without detonating any mines! Features three difficulty levels, flagging, chording, and flood-fill reveal.
 
-**Controls:**
 | Key | Action |
 |-----|--------|
 | `← → ↑ ↓` or `WASD` | Move cursor |
@@ -50,39 +48,59 @@ The timeless puzzle of logic and deduction. Uncover cells without detonating any
 
 ## 📦 Installation
 
-### Using `uv` (Recommended)
+### Quick Play (No Install)
+
+The fastest way to play — runs directly without installing anything permanently:
 
 ```sh
-# Clone the repository
-git clone https://github.com/yourusername/terminal-games.git
-cd terminal-games
+# Using uvx (recommended, requires uv)
+uvx terminal-games
 
-# Install and run with uv
-uv run terminal-games
+# Using pipx
+pipx run terminal-games
 ```
 
-### Using `pip`
+### Install with pip
 
 ```sh
 pip install terminal-games
+terminal-games
 ```
 
-### Using `pipx` (Isolated Install)
+### Install with pipx (Isolated Environment)
 
 ```sh
 pipx install terminal-games
+terminal-games
 ```
 
-### From Source
+### Install with uv
+
+```sh
+uv tool install terminal-games
+terminal-games
+```
+
+### Install from Source
 
 ```sh
 # Clone the repository
-git clone https://github.com/yourusername/terminal-games.git
+git clone https://github.com/ayu5h-raj/terminal-games.git
 cd terminal-games
 
-# Create a virtual environment and install
+# Run directly with uv (no install needed)
+uv run terminal-games
+
+# Or install in a virtual environment
 uv sync
 uv run terminal-games
+```
+
+### Install with Homebrew (Coming Soon 🍺)
+
+```sh
+brew tap ayu5h-raj/terminal-games
+brew install terminal-games
 ```
 
 ---
@@ -95,7 +113,13 @@ After installation, simply run:
 terminal-games
 ```
 
-You'll be greeted with a beautiful menu where you can select any game using the arrow keys and Enter.
+You can also run it as a Python module:
+
+```sh
+python -m terminal_games
+```
+
+You'll be greeted with a beautiful menu where you can select any game using the arrow keys and Enter:
 
 ```
  ______                    _             __   _____
@@ -126,17 +150,17 @@ You'll be greeted with a beautiful menu where you can select any game using the 
 
 ```sh
 # Clone the repo
-git clone https://github.com/yourusername/terminal-games.git
+git clone https://github.com/ayu5h-raj/terminal-games.git
 cd terminal-games
 
-# Install dependencies with uv
+# Install dependencies
 uv sync
 
 # Run the game
 uv run terminal-games
 
-# Or run directly
-uv run python -m terminal_games.main
+# Or run as a module
+uv run python -m terminal_games
 ```
 
 ### Project Structure
@@ -145,8 +169,10 @@ uv run python -m terminal_games.main
 terminal-games/
 ├── pyproject.toml              # Project config & dependencies
 ├── README.md                   # You're reading this!
+├── LICENSE                     # MIT License
 ├── terminal_games/
 │   ├── __init__.py             # Package init
+│   ├── __main__.py             # python -m support
 │   ├── main.py                 # Menu launcher & entry point
 │   └── games/
 │       ├── __init__.py         # Games package
