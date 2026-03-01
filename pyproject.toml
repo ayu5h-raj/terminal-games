@@ -5,6 +5,7 @@ description = "A collection of classic mini games you can play right in your ter
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     { name = "Ayush Raj" },
 ]
@@ -22,6 +23,11 @@ classifiers = [
 dependencies = [
     "blessed>=1.32.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/ayu5h-raj/terminal-games"
+Repository = "https://github.com/ayu5h-raj/terminal-games"
+Issues = "https://github.com/ayu5h-raj/terminal-games/issues"
 
 [project.scripts]
 terminal-games = "terminal_games.main:main"
