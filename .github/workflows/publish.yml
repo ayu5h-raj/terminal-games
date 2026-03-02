@@ -1,8 +1,9 @@
 name: 📦 Publish to PyPI & Update Homebrew
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: read
@@ -18,7 +19,7 @@ jobs:
       name: pypi
       url: https://pypi.org/project/terminal-games/
     permissions:
-      id-token: write  # Trusted publishing (no API token needed)
+      id-token: write
 
     steps:
       - name: 📥 Checkout code
@@ -42,54 +43,101 @@ jobs:
     name: 🍺 Update Homebrew Formula
     runs-on: ubuntu-latest
     needs: publish-pypi
-    permissions:
-      contents: read
 
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
       - name: ⏳ Wait for PyPI to index the new version
+        env:
+          VERSION: ${{ github.ref_name }}
         run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
-          echo "Waiting for terminal-games==${VERSION} on PyPI..."
-          for i in $(seq 1 30); do
-            if pip index versions terminal-games 2>/dev/null | grep -q "${VERSION}"; then
-              echo "✅ Version ${VERSION} found on PyPI!"
+          PYPI_VERSION="${VERSION#v}"
+          echo "Waiting for terminal-games==${PYPI_VERSION} on PyPI..."
+          MAX_RETRIES=30
+          RETRY_DELAY=10
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -sSf "https://pypi.org/pypi/terminal-games/${PYPI_VERSION}/json" > /dev/null 2>&1; then
+              echo "✅ Version ${PYPI_VERSION} found on PyPI!"
               break
             fi
-            echo "Attempt ${i}/30 — not yet available, waiting 10s..."
-            sleep 10
+            if [ $i -eq $MAX_RETRIES ]; then
+              echo "❌ Version ${PYPI_VERSION} not found after ${MAX_RETRIES} attempts"
+              exit 1
+            fi
+            echo "Attempt ${i}/${MAX_RETRIES} — not yet available, waiting ${RETRY_DELAY}s..."
+            sleep $RETRY_DELAY
           done
 
-      - name: 🔢 Get version & SHA256
-        id: meta
+      - name: 🍺 Update Homebrew Tap
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          VERSION: ${{ github.ref_name }}
         run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
-          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          PYPI_VERSION="${VERSION#v}"
 
-          # Download the sdist from PyPI and compute SHA256
-          URL="https://files.pythonhosted.org/packages/source/t/terminal-games/terminal_games-${VERSION}.tar.gz"
-          echo "url=${URL}" >> "$GITHUB_OUTPUT"
+          # Fetch package metadata from PyPI
+          PYPI_JSON=$(curl -sSL "https://pypi.org/pypi/terminal-games/${PYPI_VERSION}/json")
+          SDIST_URL=$(echo "$PYPI_JSON" | python3 -c "import json,sys; data=json.load(sys.stdin); print([u for u in data['urls'] if u['filename'].endswith('.tar.gz')][0]['url'])")
+          SDIST_SHA256=$(echo "$PYPI_JSON" | python3 -c "import json,sys; data=json.load(sys.stdin); print([u for u in data['urls'] if u['filename'].endswith('.tar.gz')][0]['digests']['sha256'])")
 
-          curl -sSL -o terminal_games.tar.gz "${URL}"
-          SHA256=$(sha256sum terminal_games.tar.gz | awk '{print $1}')
-          echo "sha256=${SHA256}" >> "$GITHUB_OUTPUT"
+          # Fetch blessed dependency metadata
+          BLESSED_JSON=$(curl -sSL "https://pypi.org/pypi/blessed/json")
+          BLESSED_URL=$(echo "$BLESSED_JSON" | python3 -c "import json,sys; data=json.load(sys.stdin); print([u for u in data['urls'] if u['filename'].endswith('.tar.gz')][0]['url'])")
+          BLESSED_SHA256=$(echo "$BLESSED_JSON" | python3 -c "import json,sys; data=json.load(sys.stdin); print([u for u in data['urls'] if u['filename'].endswith('.tar.gz')][0]['digests']['sha256'])")
 
-          echo "📦 Version: ${VERSION}"
-          echo "🔗 URL: ${URL}"
-          echo "🔒 SHA256: ${SHA256}"
+          # Fetch wcwidth dependency metadata
+          WCWIDTH_JSON=$(curl -sSL "https://pypi.org/pypi/wcwidth/json")
+          WCWIDTH_URL=$(echo "$WCWIDTH_JSON" | python3 -c "import json,sys; data=json.load(sys.stdin); print([u for u in data['urls'] if u['filename'].endswith('.tar.gz')][0]['url'])")
+          WCWIDTH_SHA256=$(echo "$WCWIDTH_JSON" | python3 -c "import json,sys; data=json.load(sys.stdin); print([u for u in data['urls'] if u['filename'].endswith('.tar.gz')][0]['digests']['sha256'])")
 
-      - name: 🍺 Update Homebrew formula in tap repo
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          repository: ayu5h-raj/homebrew-tap
-          event-type: update-formula
-          client-payload: |
-            {
-              "formula": "terminal-games",
-              "version": "${{ steps.meta.outputs.version }}",
-              "url": "${{ steps.meta.outputs.url }}",
-              "sha256": "${{ steps.meta.outputs.sha256 }}"
-            }
+          echo "📦 Version: ${PYPI_VERSION}"
+          echo "🔗 URL: ${SDIST_URL}"
+          echo "🔒 SHA256: ${SDIST_SHA256}"
+
+          # Clone homebrew-tap repo
+          git clone https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/ayu5h-raj/homebrew-tap.git
+          cd homebrew-tap
+
+          # Write the updated formula
+          cat > Formula/terminal-games.rb << EOF
+          class TerminalGames < Formula
+            include Language::Python::Virtualenv
+
+            desc "A collection of classic mini games you can play right in your terminal"
+            homepage "https://github.com/ayu5h-raj/terminal-games"
+            url "${SDIST_URL}"
+            sha256 "${SDIST_SHA256}"
+            license "MIT"
+
+            depends_on "python@3.12"
+
+            resource "blessed" do
+              url "${BLESSED_URL}"
+              sha256 "${BLESSED_SHA256}"
+            end
+
+            resource "wcwidth" do
+              url "${WCWIDTH_URL}"
+              sha256 "${WCWIDTH_SHA256}"
+            end
+
+            def install
+              virtualenv_install_with_resources
+            end
+
+            test do
+              assert_match "terminal_games", shell_output("#{bin}/terminal-games --help 2>&1", 2)
+            end
+          end
+          EOF
+
+          # Fix indentation (remove leading spaces from heredoc)
+          sed -i 's/^          //' Formula/terminal-games.rb
+
+          echo "✅ Formula updated:"
+          cat Formula/terminal-games.rb
+
+          # Commit and push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/terminal-games.rb
+          git commit -m "🍺 Update terminal-games to ${VERSION}"
+          git push
