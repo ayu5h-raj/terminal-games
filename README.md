@@ -44,6 +44,16 @@ The timeless puzzle of logic and deduction. Uncover cells without detonating any
 | `R` | Restart / new game |
 | `Q` | Quit to menu |
 
+### 🎯 2048
+Slide tiles on a 4×4 grid to combine matching numbers and reach the elusive 2048 tile! Features colorful tiles, score tracking, best score persistence within session, and the option to keep playing beyond 2048.
+
+| Key | Action |
+|-----|--------|
+| `← → ↑ ↓` or `WASD` | Slide tiles |
+| `R` | Restart game |
+| `C` | Continue playing (after reaching 2048) |
+| `Q` | Quit to menu |
+
 ---
 
 ## 📦 Installation
@@ -133,6 +143,7 @@ You'll be greeted with a beautiful menu where you can select any game using the 
                 ▸ 🧱  Tetris  -  Arrange falling blocks to clear lines
                   🐍  Snake   -  Eat food, grow longer, don't hit yourself
                   💣  Minesweeper  -  Uncover tiles without hitting mines
+                  🎯  2048    -  Slide and merge tiles to reach 2048
 
               ↑/↓ Navigate  •  Enter Select  •  q Quit
 ```
@@ -178,7 +189,8 @@ terminal-games/
 │       ├── __init__.py         # Games package
 │       ├── tetris.py           # 🧱 Tetris
 │       ├── snake.py            # 🐍 Snake
-│       └── minesweeper.py      # 💣 Minesweeper
+│       ├── minesweeper.py      # 💣 Minesweeper
+│       └── twenty48.py         # 🎯 2048
 ```
 
 ### Adding a New Game
@@ -195,9 +207,9 @@ terminal-games/
 - [x] 🧱 Tetris
 - [x] 🐍 Snake
 - [x] 💣 Minesweeper
+- [x] 🎯 2048
 - [ ] 🏓 Pong
 - [ ] 🃏 Blackjack
-- [ ] 🎯 2048
 - [ ] 🔤 Hangman
 - [ ] 🏃 Flappy Bird
 - [ ] 🚀 Space Invaders

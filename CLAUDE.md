@@ -33,7 +33,8 @@ terminal-games/
 │       ├── __init__.py         # Games package
 │       ├── tetris.py           # 🧱 Tetris
 │       ├── snake.py            # 🐍 Snake
-│       └── minesweeper.py      # 💣 Minesweeper
+│       ├── minesweeper.py      # 💣 Minesweeper
+│       └── twenty48.py         # 🎯 2048
 ```
 
 ## Key Architecture Decisions
@@ -265,6 +266,7 @@ When bumping version, update BOTH files:
 | `terminal_games/games/tetris.py` | Tetris: 7-bag randomizer, wall kicks, ghost piece, NES scoring |
 | `terminal_games/games/snake.py` | Snake: bonus food, speed progression, gradient body |
 | `terminal_games/games/minesweeper.py` | Minesweeper: 3 difficulties, flagging, chording, flood fill |
+| `terminal_games/games/twenty48.py` | 2048: slide & merge tiles, colorful styling, continue past 2048 |
 | `.github/workflows/publish.yml` | CI/CD: PyPI publish + Homebrew formula update on tag push |
 
 ## Common Tasks

@@ -7,6 +7,7 @@ from blessed import Terminal
 from terminal_games.games.tetris import play_tetris
 from terminal_games.games.snake import play_snake
 from terminal_games.games.minesweeper import play_minesweeper
+from terminal_games.games.twenty48 import play_twenty48
 
 GAMES = [
     {
@@ -26,6 +27,12 @@ GAMES = [
         "icon": "💣",
         "description": "Uncover tiles without hitting mines",
         "play": play_minesweeper,
+    },
+    {
+        "name": "2048",
+        "icon": "🎯",
+        "description": "Slide and merge tiles to reach 2048",
+        "play": play_twenty48,
     },
 ]
 
