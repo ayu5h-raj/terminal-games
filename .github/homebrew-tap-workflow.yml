@@ -1,0 +1,81 @@
+# ──────────────────────────────────────────────────────────────────────
+# This workflow should be added to the ayu5h-raj/homebrew-tap repo
+# at .github/workflows/update-terminal-games.yml
+#
+# It listens for a repository_dispatch event from the terminal-games
+# repo and automatically updates the Homebrew formula with the new
+# version, URL, and SHA256.
+# ──────────────────────────────────────────────────────────────────────
+
+name: 🍺 Update terminal-games Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+permissions:
+  contents: write
+
+jobs:
+  update-formula:
+    name: 🔄 Update Formula
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout homebrew-tap
+        uses: actions/checkout@v4
+
+      - name: 🍺 Update terminal-games formula
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          URL: ${{ github.event.client_payload.url }}
+          SHA256: ${{ github.event.client_payload.sha256 }}
+        run: |
+          cat > Formula/terminal-games.rb << 'FORMULA'
+          class TerminalGames < Formula
+            include Language::Python::Virtualenv
+
+            desc "A collection of classic mini games you can play right in your terminal 🎮"
+            homepage "https://github.com/ayu5h-raj/terminal-games"
+            url "${URL}"
+            sha256 "${SHA256}"
+            version "${VERSION}"
+            license "MIT"
+
+            depends_on "python@3.12"
+
+            resource "blessed" do
+              url "https://pypi.org/packages/source/b/blessed/blessed-1.32.0.tar.gz"
+              sha256 "f6bda5e6e7c24fdeaf0fa2521a3b1be295a56638e02a67f01a0877a3c4070195"
+            end
+
+            resource "wcwidth" do
+              url "https://pypi.org/packages/source/w/wcwidth/wcwidth-0.2.13.tar.gz"
+              sha256 "72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"
+            end
+
+            def install
+              virtualenv_install_with_resources
+            end
+
+            test do
+              assert_match "terminal", shell_output("#{bin}/terminal-games --help 2>&1", 1)
+            end
+          end
+          FORMULA
+
+          # Replace placeholder variables with actual values
+          sed -i "s|\${URL}|${URL}|g" Formula/terminal-games.rb
+          sed -i "s|\${SHA256}|${SHA256}|g" Formula/terminal-games.rb
+          sed -i "s|\${VERSION}|${VERSION}|g" Formula/terminal-games.rb
+
+          echo "✅ Formula updated to version ${VERSION}"
+          cat Formula/terminal-games.rb
+
+      - name: 📤 Commit & push updated formula
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/terminal-games.rb
+          git commit -m "🍺 Update terminal-games to v${{ github.event.client_payload.version }}"
+          git push
