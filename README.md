@@ -96,10 +96,10 @@ uv sync
 uv run terminal-games
 ```
 
-### Install with Homebrew (Coming Soon 🍺)
+### Install with Homebrew 🍺
 
 ```sh
-brew tap ayu5h-raj/terminal-games
+brew tap ayu5h-raj/tap
 brew install terminal-games
 ```
 
