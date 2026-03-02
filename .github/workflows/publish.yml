@@ -107,7 +107,7 @@ jobs:
             sha256 "${SDIST_SHA256}"
             license "MIT"
 
-            depends_on "python@3.12"
+            depends_on "python@3.13"
 
             resource "blessed" do
               url "${BLESSED_URL}"
