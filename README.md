@@ -192,10 +192,15 @@ terminal-games/
 ├── pyproject.toml              # Project config & dependencies
 ├── README.md                   # You're reading this!
 ├── LICENSE                     # MIT License
+├── LICENSES_DATA.md            # Provenance & licenses for bundled word lists
 ├── terminal_games/
 │   ├── __init__.py             # Package init
 │   ├── __main__.py             # python -m support
 │   ├── main.py                 # Menu launcher & entry point
+│   ├── data/                   # Bundled word lists (shipped in the wheel)
+│   │   ├── __init__.py         # importlib.resources loaders (cached)
+│   │   ├── words_common.txt    # ~8.7K common English words
+│   │   └── words_5letter_valid.txt  # ~16K 5-letter words (Wordle validation)
 │   └── games/
 │       ├── __init__.py         # Games package
 │       ├── tetris.py           # 🧱 Tetris
@@ -265,6 +270,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - Built with [blessed](https://github.com/jquast/blessed) — a thin, practical wrapper around terminal capabilities
 - Inspired by the classic games we all grew up playing
 - Managed with [uv](https://docs.astral.sh/uv/) — an extremely fast Python package manager
+- Word lists bundled from [`first20hours/google-10000-english`](https://github.com/first20hours/google-10000-english) (MIT) and [`dwyl/english-words`](https://github.com/dwyl/english-words) (Unlicense). See [LICENSES_DATA.md](LICENSES_DATA.md) for details.
 
 ---
 
