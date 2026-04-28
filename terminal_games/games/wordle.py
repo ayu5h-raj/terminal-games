@@ -99,6 +99,10 @@ class WordleGame:
             return (False, "Not enough letters")
         if self.current not in _valid_guesses():
             return (False, "Not in word list")
+        if self.current in self.guesses:
+            # Official Wordle silently allows duplicates (wastes a guess); we
+            # surface a flash so the player can correct without burning a row.
+            return (False, "Already guessed")
 
         feedback = self._evaluate(self.current)
         self.guesses.append(self.current)
