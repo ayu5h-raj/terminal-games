@@ -4,6 +4,7 @@ import sys
 
 from blessed import Terminal
 
+from terminal_games import __version__
 from terminal_games.games.tetris import play_tetris
 from terminal_games.games.snake import play_snake
 from terminal_games.games.minesweeper import play_minesweeper
@@ -104,7 +105,7 @@ def draw_menu(term: Terminal, selected: int) -> None:
     x = max(0, (width - len(controls)) // 2)
     print(term.move_xy(x, footer_y) + term.dim + controls + term.normal)
 
-    version_text = "v0.1.0"
+    version_text = f"v{__version__}"
     print(term.move_xy(width - len(version_text) - 2, height - 1) + term.dim + version_text + term.normal)
 
 
