@@ -71,9 +71,10 @@ The classic word-guessing game with a friendly twist — save the stickman by gu
 
 | Key | Action |
 |-----|--------|
-| `A-Z` | Guess a letter |
-| `R` | New word / restart |
-| `Q` | Quit to menu |
+| `A-Z` | Guess a letter (yes, including `Q` and `R`) |
+| `Esc` | Quit to menu |
+| `R` *(after round ends)* | New word |
+| `Q` *(after round ends)* | Quit to menu |
 
 ---
 

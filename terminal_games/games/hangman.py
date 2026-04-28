@@ -240,9 +240,9 @@ def draw_game(term: Terminal, game: HangmanGame) -> None:
                 term.move_xy(max(0, (term.width - len(note)) // 2), controls_y - 1)
                 + term.dim + term.bright_yellow + note + term.normal
             )
-        controls = "A-Z guess  •  r restart  •  q quit"
+        controls = "A-Z guess  •  ESC quit to menu"
     else:
-        controls = "r: new word  •  q: quit to menu"
+        controls = "r: new word  •  q/ESC: quit to menu"
     cx = max(0, (term.width - len(controls)) // 2)
     output.append(term.move_xy(cx, controls_y) + term.dim + controls + term.normal)
 
@@ -269,15 +269,18 @@ def play_hangman(term: Terminal) -> None:
         while True:
             key = term.inkey(timeout=None)
 
-            if key == "q" or key.name == "KEY_ESCAPE":
+            # ESC always quits to menu, regardless of state.
+            if key.name == "KEY_ESCAPE":
                 return
 
-            if key == "r":
-                game.reset()
-                draw_game(term, game)
-                continue
-
+            # 'q' and 'r' are commands only when the round is over —
+            # during play they're valid letters to guess.
             if game.state != "playing":
+                if key == "q":
+                    return
+                if key == "r":
+                    game.reset()
+                    draw_game(term, game)
                 continue
 
             ks = str(key)
