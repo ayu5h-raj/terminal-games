@@ -241,9 +241,9 @@ def draw_game(term: Terminal, game: WordleGame) -> None:
 
     controls_y = kb_y + len(KEYBOARD_ROWS) + 1
     if game.state == "playing":
-        controls = "A-Z type  •  ENTER submit  •  ⌫ delete  •  r restart  •  q quit"
+        controls = "A-Z type  •  ENTER submit  •  ⌫ delete  •  ESC quit"
     else:
-        controls = "r: new word  •  q: quit to menu"
+        controls = "r: new word  •  q/ESC: quit to menu"
     cx = max(0, (term.width - len(controls)) // 2)
     output.append(term.move_xy(cx, controls_y) + term.dim + controls + term.normal)
 
@@ -272,15 +272,19 @@ def play_wordle(term: Terminal) -> None:
             if had_flash:
                 game.flash = ""
 
-            if key == "q" or key.name == "KEY_ESCAPE":
+            # ESC always quits to menu, regardless of state.
+            if key.name == "KEY_ESCAPE":
                 return
 
-            if key == "r":
-                game.reset()
-                draw_game(term, game)
-                continue
-
+            # 'q' and 'r' are commands only when the round is over —
+            # during play they're valid letters in your guess.
             if game.state != "playing":
+                if key == "q":
+                    return
+                if key == "r":
+                    game.reset()
+                    draw_game(term, game)
+                    continue
                 if had_flash:
                     draw_game(term, game)
                 continue

@@ -59,11 +59,12 @@ The viral word-guessing game in your terminal! You have 6 tries to guess a hidde
 
 | Key | Action |
 |-----|--------|
-| `A-Z` | Type a letter |
+| `A-Z` | Type a letter (yes, including `Q` and `R`) |
 | `Enter` | Submit guess |
 | `Backspace` | Delete last letter |
-| `R` | New word / restart |
-| `Q` | Quit to menu |
+| `Esc` | Quit to menu |
+| `R` *(after round ends)* | New word |
+| `Q` *(after round ends)* | Quit to menu |
 
 ---
 
