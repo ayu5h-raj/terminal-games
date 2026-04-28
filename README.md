@@ -54,6 +54,17 @@ Slide tiles on a 4×4 grid to combine matching numbers and reach the elusive 204
 | `C` | Continue playing (after reaching 2048) |
 | `Q` | Quit to menu |
 
+### 📝 Wordle
+The viral word-guessing game in your terminal! You have 6 tries to guess a hidden 5-letter word. After each guess, letters light up green (right letter, right spot), yellow (right letter, wrong spot), or grey (not in the word). An on-screen keyboard tracks the letters you've already used.
+
+| Key | Action |
+|-----|--------|
+| `A-Z` | Type a letter |
+| `Enter` | Submit guess |
+| `Backspace` | Delete last letter |
+| `R` | New word / restart |
+| `Q` | Quit to menu |
+
 ---
 
 ## 📦 Installation
@@ -190,7 +201,8 @@ terminal-games/
 │       ├── tetris.py           # 🧱 Tetris
 │       ├── snake.py            # 🐍 Snake
 │       ├── minesweeper.py      # 💣 Minesweeper
-│       └── twenty48.py         # 🎯 2048
+│       ├── twenty48.py         # 🎯 2048
+│       └── wordle.py           # 📝 Wordle
 ```
 
 ### Adding a New Game
@@ -208,9 +220,10 @@ terminal-games/
 - [x] 🐍 Snake
 - [x] 💣 Minesweeper
 - [x] 🎯 2048
+- [x] 📝 Wordle
+- [ ] 🪢 Hangman
 - [ ] 🏓 Pong
 - [ ] 🃏 Blackjack
-- [ ] 🔤 Hangman
 - [ ] 🏃 Flappy Bird
 - [ ] 🚀 Space Invaders
 - [ ] 🏰 Text Adventure
