@@ -20,9 +20,13 @@ were added; only filtering and de-duplication were applied.
 - Started from `google-10000-english.txt` (10,000 words, frequency-sorted).
 - Lowercased and stripped whitespace.
 - Kept only entries that are pure ASCII alphabetic and 4–12 characters long.
+- **Intersected with `dwyl/english-words/words_alpha.txt`** to drop entries
+  that aren't in a real English dictionary — this removes web-frequency
+  artifacts like "freebsd", "mediawiki", "javascript" that appear in the
+  Google corpus but would feel wrong as a Hangman target word.
 - Removed duplicates while preserving the first occurrence (so the file
   remains roughly frequency-sorted from most- to least-common).
-- Result: ~8,752 words.
+- Result: ~8,319 words.
 
 ### `words_5letter_valid.txt`
 - Started from `words_alpha.txt` (370,105 words).
@@ -83,11 +87,17 @@ curl -fsSL -o /tmp/dwyl-words-alpha.txt \
   https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt
 
 python3 - <<'PY'
+dictionary = {w.strip().lower() for w in open('/tmp/dwyl-words-alpha.txt')
+              if w.strip().isascii() and w.strip().isalpha()}
+
 seen = set(); common = []
 for w in open('/tmp/google-10000-english.txt'):
     w = w.strip().lower()
-    if 4 <= len(w) <= 12 and w.isascii() and w.isalpha() and w not in seen:
-        common.append(w); seen.add(w)
+    if not (4 <= len(w) <= 12): continue
+    if not (w.isascii() and w.isalpha()): continue
+    if w in seen: continue
+    if w not in dictionary: continue   # drop brand names / non-dictionary entries
+    common.append(w); seen.add(w)
 with open('terminal_games/data/words_common.txt', 'w') as f:
     f.write('\n'.join(common) + '\n')
 

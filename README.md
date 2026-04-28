@@ -199,7 +199,7 @@ terminal-games/
 │   ├── main.py                 # Menu launcher & entry point
 │   ├── data/                   # Bundled word lists (shipped in the wheel)
 │   │   ├── __init__.py         # importlib.resources loaders (cached)
-│   │   ├── words_common.txt    # ~8.7K common English words
+│   │   ├── words_common.txt    # ~8.3K common English words
 │   │   └── words_5letter_valid.txt  # ~16K 5-letter words (Wordle validation)
 │   └── games/
 │       ├── __init__.py         # Games package
