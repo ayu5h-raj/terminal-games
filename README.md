@@ -54,6 +54,18 @@ Slide tiles on a 4×4 grid to combine matching numbers and reach the elusive 204
 | `C` | Continue playing (after reaching 2048) |
 | `Q` | Quit to menu |
 
+### 📝 Wordle
+The viral word-guessing game in your terminal! You have 6 tries to guess a hidden 5-letter word. After each guess, letters light up green (right letter, right spot), yellow (right letter, wrong spot), or grey (not in the word). An on-screen keyboard tracks the letters you've already used.
+
+| Key | Action |
+|-----|--------|
+| `A-Z` | Type a letter (yes, including `Q` and `R`) |
+| `Enter` | Submit guess |
+| `Backspace` | Delete last letter |
+| `Esc` | Quit to menu |
+| `R` *(after round ends)* | New word |
+| `Q` *(after round ends)* | Quit to menu |
+
 ---
 
 ## 📦 Installation
@@ -181,16 +193,22 @@ terminal-games/
 ├── pyproject.toml              # Project config & dependencies
 ├── README.md                   # You're reading this!
 ├── LICENSE                     # MIT License
+├── LICENSES_DATA.md            # Provenance & licenses for bundled word lists
 ├── terminal_games/
 │   ├── __init__.py             # Package init
 │   ├── __main__.py             # python -m support
 │   ├── main.py                 # Menu launcher & entry point
+│   ├── data/                   # Bundled word lists (shipped in the wheel)
+│   │   ├── __init__.py         # importlib.resources loaders (cached)
+│   │   ├── words_common.txt    # ~8.3K common English words
+│   │   └── words_5letter_valid.txt  # ~16K 5-letter words (Wordle validation)
 │   └── games/
 │       ├── __init__.py         # Games package
 │       ├── tetris.py           # 🧱 Tetris
 │       ├── snake.py            # 🐍 Snake
 │       ├── minesweeper.py      # 💣 Minesweeper
-│       └── twenty48.py         # 🎯 2048
+│       ├── twenty48.py         # 🎯 2048
+│       └── wordle.py           # 📝 Wordle
 ```
 
 ### Adding a New Game
@@ -208,9 +226,10 @@ terminal-games/
 - [x] 🐍 Snake
 - [x] 💣 Minesweeper
 - [x] 🎯 2048
+- [x] 📝 Wordle
+- [ ] 🪢 Hangman
 - [ ] 🏓 Pong
 - [ ] 🃏 Blackjack
-- [ ] 🔤 Hangman
 - [ ] 🏃 Flappy Bird
 - [ ] 🚀 Space Invaders
 - [ ] 🏰 Text Adventure
@@ -252,6 +271,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - Built with [blessed](https://github.com/jquast/blessed) — a thin, practical wrapper around terminal capabilities
 - Inspired by the classic games we all grew up playing
 - Managed with [uv](https://docs.astral.sh/uv/) — an extremely fast Python package manager
+- Word lists bundled from [`first20hours/google-10000-english`](https://github.com/first20hours/google-10000-english) (MIT) and [`dwyl/english-words`](https://github.com/dwyl/english-words) (Unlicense). See [LICENSES_DATA.md](LICENSES_DATA.md) for details.
 
 ---
 

@@ -8,6 +8,7 @@ from terminal_games.games.tetris import play_tetris
 from terminal_games.games.snake import play_snake
 from terminal_games.games.minesweeper import play_minesweeper
 from terminal_games.games.twenty48 import play_twenty48
+from terminal_games.games.wordle import play_wordle
 
 GAMES = [
     {
@@ -33,6 +34,12 @@ GAMES = [
         "icon": "🎯",
         "description": "Slide and merge tiles to reach 2048",
         "play": play_twenty48,
+    },
+    {
+        "name": "Wordle",
+        "icon": "📝",
+        "description": "Guess the 5-letter word in 6 tries",
+        "play": play_wordle,
     },
 ]
 
