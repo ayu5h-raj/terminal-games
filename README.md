@@ -66,6 +66,15 @@ The viral word-guessing game in your terminal! You have 6 tries to guess a hidde
 | `R` *(after round ends)* | New word |
 | `Q` *(after round ends)* | Quit to menu |
 
+### 🪢 Hangman
+The classic word-guessing game with a friendly twist — save the stickman by guessing letters before the gallows fills up. You have 6 wrong guesses before it's over. Hits show up green on the alphabet tracker; misses show up red.
+
+| Key | Action |
+|-----|--------|
+| `A-Z` | Guess a letter |
+| `R` | New word / restart |
+| `Q` | Quit to menu |
+
 ---
 
 ## 📦 Installation
@@ -208,7 +217,8 @@ terminal-games/
 │       ├── snake.py            # 🐍 Snake
 │       ├── minesweeper.py      # 💣 Minesweeper
 │       ├── twenty48.py         # 🎯 2048
-│       └── wordle.py           # 📝 Wordle
+│       ├── wordle.py           # 📝 Wordle
+│       └── hangman.py          # 🪢 Hangman
 ```
 
 ### Adding a New Game
@@ -227,7 +237,7 @@ terminal-games/
 - [x] 💣 Minesweeper
 - [x] 🎯 2048
 - [x] 📝 Wordle
-- [ ] 🪢 Hangman
+- [x] 🪢 Hangman
 - [ ] 🏓 Pong
 - [ ] 🃏 Blackjack
 - [ ] 🏃 Flappy Bird

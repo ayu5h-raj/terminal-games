@@ -9,6 +9,7 @@ from terminal_games.games.snake import play_snake
 from terminal_games.games.minesweeper import play_minesweeper
 from terminal_games.games.twenty48 import play_twenty48
 from terminal_games.games.wordle import play_wordle
+from terminal_games.games.hangman import play_hangman
 
 GAMES = [
     {
@@ -40,6 +41,12 @@ GAMES = [
         "icon": "📝",
         "description": "Guess the 5-letter word in 6 tries",
         "play": play_wordle,
+    },
+    {
+        "name": "Hangman",
+        "icon": "🪢",
+        "description": "Guess the word before the hangman is drawn",
+        "play": play_hangman,
     },
 ]
 
