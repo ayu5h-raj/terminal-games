@@ -1,11 +1,11 @@
 [project]
 name = "terminal-games"
-version = "0.2.0"
+version = "0.3.0"
 description = "A collection of classic mini games you can play right in your terminal 🎮"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "LICENSES_DATA.md"]
 authors = [
     { name = "Ayush Raj" },
 ]

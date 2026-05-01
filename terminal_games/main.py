@@ -9,7 +9,7 @@ from terminal_games.games.tetris import play_tetris
 from terminal_games.games.snake import play_snake
 from terminal_games.games.minesweeper import play_minesweeper
 from terminal_games.games.twenty48 import play_twenty48
-from terminal_games.games.wordle import play_wordle
+from terminal_games.games.wordle import play_wordle, play_wordle_daily
 from terminal_games.games.hangman import play_hangman
 
 GAMES = [
@@ -42,6 +42,12 @@ GAMES = [
         "icon": "📝",
         "description": "Guess the 5-letter word in 6 tries",
         "play": play_wordle,
+    },
+    {
+        "name": "Wordle Daily",
+        "icon": "📅",
+        "description": "One puzzle a day, same word for everyone",
+        "play": play_wordle_daily,
     },
     {
         "name": "Hangman",

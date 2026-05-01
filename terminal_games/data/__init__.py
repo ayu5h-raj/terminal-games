@@ -39,3 +39,27 @@ def valid_5letter_guesses() -> frozenset[str]:
     accepted, not only words from the smaller answer pool.
     """
     return frozenset(_load("words_5letter_valid.txt"))
+
+
+@lru_cache(maxsize=1)
+def wordle_answers() -> tuple[str, ...]:
+    """Curated Wordle answer pool (~2,309 words).
+
+    Derived from the original Josh Wardle Wordle source (MIT), with a
+    small post-acquisition blocklist applied. Sorted alphabetically and
+    treated as append-only so daily-mode word indices stay stable.
+    See :mod:`scripts.build_wordle_answers` for the build pipeline.
+    """
+    return _load("words_wordle_answers.txt")
+
+
+@lru_cache(maxsize=1)
+def wordle_valid_guesses() -> frozenset[str]:
+    """Original Wordle valid-guess set (~12,963 words).
+
+    Union of the original Wordle answer + allowed-guess lists (MIT).
+    This is the strict Wordle vocabulary — broader 5-letter sources
+    like :func:`valid_5letter_guesses` contain non-words and are not
+    used for guess validation.
+    """
+    return frozenset(_load("words_wordle_valid.txt"))
