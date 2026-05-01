@@ -55,7 +55,7 @@ Slide tiles on a 4×4 grid to combine matching numbers and reach the elusive 204
 | `Q` | Quit to menu |
 
 ### 📝 Wordle
-The viral word-guessing game in your terminal! You have 6 tries to guess a hidden 5-letter word. After each guess, letters light up green (right letter, right spot), yellow (right letter, wrong spot), or grey (not in the word). An on-screen keyboard tracks the letters you've already used.
+The viral word-guessing game in your terminal! You have 6 tries to guess a hidden 5-letter word. After each guess, letters light up green (right letter, right spot), yellow (right letter, wrong spot), or grey (not in the word). An on-screen keyboard tracks the letters you've already used. The answer pool and valid-guess list are derived from the original (pre-NYT) MIT-licensed Wordle source.
 
 | Key | Action |
 |-----|--------|
@@ -65,6 +65,16 @@ The viral word-guessing game in your terminal! You have 6 tries to guess a hidde
 | `Esc` | Quit to menu |
 | `R` *(after round ends)* | New word |
 | `Q` *(after round ends)* | Quit to menu |
+
+### 📅 Wordle Daily
+One puzzle per day — same word for every player, deterministic by date. Quit mid-puzzle and your progress resumes when you come back. Once you solve (or use all 6 guesses), you're locked out until tomorrow's puzzle. Saved state lives at `~/.terminal_games/wordle_daily.json`.
+
+| Key | Action |
+|-----|--------|
+| `A-Z` | Type a letter |
+| `Enter` | Submit guess |
+| `Backspace` | Delete last letter |
+| `Esc` / `Q` | Quit to menu (resume on next launch) |
 
 ### 🪢 Hangman
 The classic word-guessing game with a friendly twist — save the stickman by guessing letters before the gallows fills up. You have 6 wrong guesses before it's over. Hits show up green on the alphabet tracker; misses show up red.
@@ -211,15 +221,19 @@ terminal-games/
 │   ├── data/                   # Bundled word lists (shipped in the wheel)
 │   │   ├── __init__.py         # importlib.resources loaders (cached)
 │   │   ├── words_common.txt    # ~8.3K common English words
-│   │   └── words_5letter_valid.txt  # ~16K 5-letter words (Wordle validation)
+│   │   ├── words_5letter_valid.txt  # ~16K 5-letter words
+│   │   ├── words_wordle_answers.txt # ~2.3K curated Wordle answers
+│   │   └── words_wordle_valid.txt   # ~13K original-Wordle valid guesses
 │   └── games/
 │       ├── __init__.py         # Games package
 │       ├── tetris.py           # 🧱 Tetris
 │       ├── snake.py            # 🐍 Snake
 │       ├── minesweeper.py      # 💣 Minesweeper
 │       ├── twenty48.py         # 🎯 2048
-│       ├── wordle.py           # 📝 Wordle
+│       ├── wordle.py           # 📝 Wordle (random + daily mode)
 │       └── hangman.py          # 🪢 Hangman
+├── scripts/
+│   └── build_wordle_answers.py # Regenerates the Wordle word lists
 ```
 
 ### Adding a New Game
@@ -238,6 +252,7 @@ terminal-games/
 - [x] 💣 Minesweeper
 - [x] 🎯 2048
 - [x] 📝 Wordle
+- [x] 📅 Wordle Daily
 - [x] 🪢 Hangman
 - [ ] 🏓 Pong
 - [ ] 🃏 Blackjack

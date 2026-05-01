@@ -1,6 +1,6 @@
 # Bundled Data Licenses
 
-This project ships two word-list data files inside the wheel under
+This project ships four word-list data files inside the wheel under
 `terminal_games/data/`. Each is derived from a third-party source and
 retains its upstream license. This document records provenance and the
 exact transformations applied so end users can audit what they are
@@ -10,6 +10,8 @@ installing.
 |---|---|---|---|
 | `terminal_games/data/words_common.txt` | [`first20hours/google-10000-english`](https://github.com/first20hours/google-10000-english) | `google-10000-english.txt` | MIT |
 | `terminal_games/data/words_5letter_valid.txt` | [`dwyl/english-words`](https://github.com/dwyl/english-words) | `words_alpha.txt` | The Unlicense (public domain) |
+| `terminal_games/data/words_wordle_answers.txt` | Original Wordle source (Josh Wardle, pre-NYT) — archived at [`cfreshman` gist](https://gist.github.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b) | `wordle-answers-alphabetical.txt` | MIT |
+| `terminal_games/data/words_wordle_valid.txt` | Original Wordle source (Josh Wardle, pre-NYT) — archived at [`cfreshman` gist](https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c) | `wordle-allowed-guesses.txt` ∪ answers | MIT |
 
 ## Transformations applied
 
@@ -34,6 +36,30 @@ were added; only filtering and de-duplication were applied.
 - Kept only entries that are pure ASCII alphabetic and exactly 5 characters long.
 - Sorted alphabetically and de-duplicated.
 - Result: ~15,921 words.
+
+### `words_wordle_answers.txt`
+**Generated file — do not hand-edit.** Run `python3 scripts/build_wordle_answers.py`
+to regenerate.
+- Started from the original Wordle answer list (`wordle-answers-alphabetical.txt`,
+  2,314 words), archived from the pre-NYT Wordle source (MIT-licensed).
+- Removed a small sensitivity blocklist mirroring NYT's own post-acquisition
+  removals: `agora`, `bitch`, `fetus`, `harem`, `lynch`, `pussy`, `slave`,
+  `whore`, `wench`.
+- Sorted alphabetically. **Treated as append-only** so the daily-mode word
+  index for any given date stays stable across releases.
+- Result: ~2,309 words.
+- Build script: `scripts/build_wordle_answers.py`.
+
+### `words_wordle_valid.txt`
+**Generated file — do not hand-edit.** Run `python3 scripts/build_wordle_answers.py`
+to regenerate.
+- Union of the original Wordle answers (2,314) and the original Wordle
+  allowed-guesses list (`wordle-allowed-guesses.txt`, 10,656 words), both
+  archived from the pre-NYT Wordle source (MIT-licensed).
+- Removed the same sensitivity blocklist as above.
+- Sorted alphabetically and de-duplicated.
+- Result: ~12,963 words.
+- Build script: `scripts/build_wordle_answers.py`.
 
 ## License texts
 
